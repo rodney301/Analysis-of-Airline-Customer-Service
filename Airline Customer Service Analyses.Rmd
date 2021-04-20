@@ -1,0 +1,428 @@
+
+
+```{r preliminary_code}
+
+library(dplyr)
+library(data.table)
+library(ggplot2)
+library(ISLR)
+library(tidyverse)
+library(tidyr)
+library(readr)
+library(readxl)
+library(gginference)
+library(stats)
+library(data.table)
+
+
+setwd("D:/Columbia Studies/Mods for Fall 2020/APAN 5300 Research Design/Week 7 - Survey Design")
+
+airline <- read.csv("airline customer service.csv")
+
+
+
+```
+
+
+## Questions {.tabset}
+
+### Q1 
+
+#### Question
+
+What is the primary research question that will help the airline?  Make sure to state this in terms of a measurable quantity.
+
+#### Answer
+
+The primary research question that we would like to address is: "Does support over phone or online platform lead to differences in the rate of success in resolving customer problems?".
+
+The measurable quantity is the outcome of whether problems were successfully resolved. 
+
+
+```{r q1}
+
+
+
+
+
+
+```
+
+
+
+
+### Q2 
+
+#### Question
+
+What kind of research study can be conducted with the available data?
+
+#### Answer
+
+An observational and descriptive study could be conducted with the available data which belongs to the airline's company records on interactions with customers. 
+
+A two samples test of proportion could be applied on the observed data as part of inferential statistics to determine if there is a significant difference in the probability of success in resolving customer problems between phone and online platform inquiries. 
+
+
+```{r q2}
+
+
+
+```
+
+
+
+
+### Q3 
+
+#### Question
+
+Are there any drawbacks to the kind of study you plan to undertake?
+
+#### Answer
+
+Unlike experiments in which we could leverage randomization to allocate subjects into each group, we might encounter selection bias as the test subjects could self-select their groups and hence these groups might not be representative of the population. 
+
+Also, without randomization in an observational study, we could not be certain there there is probabilistic balance between the cohorts. 
+
+
+```{r q3}
+
+
+
+
+```
+
+
+
+### Q4 
+
+#### Question
+
+If you could devise your own experiment, what would you do differently?
+
+#### Answer
+
+I would have requested for collection of more data variables such as gender, age groups and whether the caller is an existing or prospective customer. This would generate more information on measured differences. 
+
+
+
+```{r q4}
+
+
+
+
+```
+
+
+
+### Q5 
+
+#### Question
+
+Perform a stastistical test that would analyze the relationship between the independent and dependent variables.  In this test, do not consider any other variables.  What would you conclude from this test?
+
+#### Answer
+I have chosen the two sample proportion test (two-tailed). The independent variable would be the service modality namely online platform and phone. The dependent variable would be the outcome of whether the customer's problem was solved by the agent during the interaction. 
+
+From both tests, the obtained p-value of 3.299e-11 is much smaller than the typical significance level of 0.05. Hence, we could reject the null hypothesis, concluding that there is significant difference in the probability of success in resolving problems between the two groups of inquiries by online platform and phone. 
+
+
+
+
+```{r q5}
+
+
+prop_test_online_phone <- prop.test(x = c(airline_online_successful, airline_phone_successful), n = c(airline_online_total_count, airline_phone_total_count))
+
+prop_test_online_phone
+
+
+
+
+
+
+
+
+```
+
+
+
+### Q6
+
+#### Question
+
+Apart from the independent and dependent variables, how should we think about the other variables in the data, and what would be the best way to consider them in the analysis?
+
+#### Answer
+
+A logistic regression model could be used. As the outcome in the study is measuring whether customers' problems have been solved at the end of the engagement, it is a binary outcome. 
+
+
+
+```{r q6}
+
+```
+
+
+
+
+### Q7
+
+#### Question
+
+What would be an appropriate way to incorporate these other measured variables into an analysis of the relationship between the independent and dependent variables?
+
+#### Answer
+
+A logistic regression model could be generated with the additional measured variables.
+
+The summary of the model would provide us with an insight on whether these variables are statistically significant in predicting the outcome (i.e. whether the customer's problem would be resolved). 
+
+
+```{r q7}
+
+
+```
+
+
+
+### Q8
+
+#### Question
+
+Create a model that estimates the effect of the independent variable on the dependent variable while incorporating the other measured variables.  Show the estimates and any measures of significance.
+
+#### Answer
+
+Based on the list of variables, I have generated a logistic model with "resolved" as the dependent variable and the rest of the variables as independent variables. The estimates and measures of significance are as shown in the output. 
+
+
+
+
+
+```{r q8}
+
+
+airline_linear_model <- glm(resolved ~., data = airline, family = "binomial")
+
+summary(airline_linear_model)
+
+
+
+```
+
+### Q9
+
+#### Question
+
+Are there any other concerns with regard to this study and its design?
+
+#### Answer
+
+Yes, there would be concerns with regard to the study and design. As this is not a controlled experiment, we could not be certain of the effects of changes to the variables on the outcome. Having a control parameter would help to pinpoint the effects of the independent variables on the outcome. 
+
+
+
+
+
+```{r q9}
+
+
+
+```
+
+
+
+### Q10
+
+#### Question
+
+Now imagine that the conclusion you drew from analyzing the data is actually incorrect.  In fact, the real effect of the independent variable is exactly the opposite of what you demonstrated.  How would you explain what happened?
+
+#### Answer
+
+This is likely due to the lack of control implemented in the collection of the data. Also, without randomization, the test subjects could choose their groups and hence the results might not be representative of the population. 
+
+
+
+```{r q10}
+
+```
+
+
+
+
+### Q11
+
+#### Question
+
+The customer service organization is also interested in understanding the quality of its work and the overall satisfaction of the customer.  At the conclusion of the call, there is an opportunity to conduct a survey.  What is the best way to implement this idea?
+
+
+#### Answer
+
+At the end of the call, to incentivize customers to take an automated survey, a nominal token of appreciation in the form of discount codes or small gifts could be given to customers who successfully completed the survey and subsequently place orders with the airline. 
+
+
+```{r q11}
+
+```
+
+
+
+
+
+### Q12
+
+#### Question
+
+What are some possible topics that you might ask about?  Select three potential areas and briefly discuss why these are important to gather information about.
+
+#### Answer
+
+Three potential topics that could be included are: (a) agent's proficiency in addressing the problems; (b)agent's attitude and professionalism; and (c) tendency to make a purchase or recommend the airline to others. 
+
+The first question on the agent's proficiency in addressing problems would provide insights on whether the specific agents require further training to build up domain specific knowledge. This would help to improve customer service for subsequent engagements. 
+
+The second topic would provide a measure of customer satisfaction in interacting with the airline staff. This is an important quantitative measure that could potentially be used as a metric in the assessment of indivdual's performance. 
+
+The third topic could provide insights on the net promoter effect of customers. This could be useful for the marketing team which would be interested in expanding the consumer reach and customer base for the airline. 
+
+
+
+```{r q12}
+
+```
+
+
+
+
+### Q13
+
+#### Question
+
+For each of the three areas that you selected above, design a survey question.  Keep in mind that the design should be appropriate for the setting.  Provide the question, the possible answers, and the meaning of the answers.
+
+#### Answer
+
+
+A possible survey question for the first topic could be: "How would you rate the agent's proficiency in the area of your concerns?". The possible answers would be three possible choices:(a) "Poor technical knowledge of the matter"; (b) Moderate level of knowledge to explain and resolve the problem"; and (c) Well-versed in handling the matter with clear explanation. A customer's evaluation choice of (a) means that the agent would likely require more training in the domain while a choice of (c) implies that the agent has been exemplary in technical knowledge of the matter and would likely be able to resolve the problems with ease. 
+
+For the second topic, a possible question could be: "Based on a scale of 1 to 5, where 1 is bad service, 3 is moderate service and 5 is excellent service, how would you rate the agent's attitude and professionalism?". The possible answers would range from 1 to 5. A score of 1 would mean that the customer had a bad experience that could be attributed to poor services rendered by the agent while a score of 5 would imply that the customer likely had a wonderful experience stemming from excellent services provided to him or her. 
+
+A possible question for the third topic could be: "Are you likely to promote our airline to others around you?". The possible answers would be "Yes" or "No". A response of "Yes" means that the customer is generally satisfied with the airline services and would likely convey good words about the airline to others, potentially bringing in new customers. On the other hand, a response of "No" means that the customer is likely unhappy with the airline and would not promote it to others. In more severe cases, the customers might even cite examples of poor experience to others, potentially leading to loss in sales. 
+
+
+```{r q13}
+
+```
+
+
+
+
+
+### Q14
+
+#### Question
+
+In this setting, how many questions would you ask the customer?  Explain your answer.
+
+#### Answer
+
+I would ask the customer three questions with one question for each of the three identified topics. An automated survey at the end of the call is preferred to be a short and concise one in order not to appear onerous. 
+
+
+
+```{r q14}
+
+```
+
+
+
+### Q15
+
+#### Question
+
+The airline has a larger number of questions that it would like to ask.  What would be your strategy for gathering all of this information?  Explain your answer.
+
+#### Answer
+
+With a larger number of questions to ask, it might be good to have more structured questions with numerical or categorical responses and minimal unstructured questions that allow free text response. 
+
+A simple structured question that requires only a "Yes" or "No" response would not weigh on the attention span of respondents as much as unstructured questions. 
+
+
+
+```{r q15}
+
+```
+
+
+
+
+### Q16
+
+#### Question
+
+In this context, what are the advantages of a longer survey, and what are the benefits for a shorter survey?  Explain your answers.
+
+#### Answer
+
+A longer survey has the benefits of capturing more details about other aspects that could have an impact or observed relationship with the key variables we are measuring from the response. 
+
+In contrast, a shorter survey is geared towards collection of critical and concise information. With limited attention span among respondents, a shorter survey is more likely to yield a higher proportion of credible results as compared to longer surveys. 
+
+
+
+### Q17
+
+#### Question
+
+If the airline's managers are adamant about asking all of the preferred questions, what are some alternatives to this automated survey?
+
+#### Answer
+
+For a larger number of questions, I would not recommend an automated survey at the end of a call. 
+
+One possible avenue to gather response to a larger number of questions is via emails with links to an online survey. An alternative approach is to conduct personal interviews either physically or via video teleconferencing. 
+
+
+
+### Q18
+
+#### Question
+
+Which customers would be more likely to participate in the automated survey after the customer service call, and which customers would be less likely?
+
+#### Answer
+
+Customers who had a bad experience such as poor agents' attitude and did not meet their objectives of calls (i.e. problems successfully resolved) as well as customers who received excellent services would more likely participate in the automated survey after calls.
+
+In contrast, customers who had their problems resolved based on their expectation would less likely respond to the survey. This is because the service level was close to their expectation. 
+
+
+### Q19
+
+#### Question
+
+How reliable would you consider the information that comes from the automated survey to be?
+
+#### Answer
+
+While the survey is available to each user at the end of the call, certain groups of people would be more likely and less likely to respond to it. Hence, the results would be skewed towards the observations of customers who are more likely to respond to the survey. Hence, it would not be as reliable as a survey that is served and completed by a randomly sampled group of people. 
+
+
+
+### Q20
+
+#### Question
+
+What else could you recommend to the managers of the airline's customer service center to help them achieve the stated goal of understanding the quality of its work and the overall satisfaction of the customer?  Provide a number of strategic recommendations that are actionable, measurable, and amenable to experimentation.
+
+#### Answer
+
+The managers could consider implementing a follow-up mechanism such as automated emails that would be dispatched within one week from the inquiries. . 
+
+In addition, the managers could consider interviewing a small pool of users as part of the follow-up process to validate the results. Through the interviews, more peripheral questions such as products preferences and frequency of purchases could be included to collect useful attributes for further analysis.
+
